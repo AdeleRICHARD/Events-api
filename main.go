@@ -2,8 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"events-api/testdb"
+	"events-api/handlers"
 	"fmt"
+	"net/http"
 
 	_ "github.com/lib/pq"
 )
@@ -25,17 +26,13 @@ func main() {
 	if err != nil {
 		fmt.Println("err" + err.Error())
 	}
+
+	http.HandleFunc("/health", handlers.Health)
+
 	defer db.Close()
 
-	testdb.TestInsert(db)
-	/*
-		args := Args{
-			conn: psqlconn,
-			port: "9000",
-		} */
+	erreur := http.ListenAndServe(":8000", nil)
+	println(erreur.Error())
 
-	/* if err := Run(args); err != nil {
-		log.Println(err)
-	} */
 	fmt.Println("Successfully connected!")
 }

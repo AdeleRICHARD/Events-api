@@ -1,16 +1,16 @@
 version: '3.1'
 
 services:
-
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 9000:8080
 
   app:
     container_name: events_api
-    build: .
+    build:
+      context: .
     ports:
       - 8000:8000
     restart: on-failure
@@ -21,7 +21,6 @@ services:
       - db
     links:
       - db
-
   db:
     image: postgres
     restart: always
