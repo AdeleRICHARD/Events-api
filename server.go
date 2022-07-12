@@ -2,8 +2,6 @@ package main
 
 import (
 	"events-api/handlers"
-	"events-api/store"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -20,20 +18,20 @@ type Args struct {
 }
 
 // Run run the server based on given args
-func Run(args Args) error {
-	// router
-	router := mux.NewRouter().
-		PathPrefix("/api/v1/").
-		Subrouter()
+//func Run(args Args) error {
+// router
+/* 	router := mux.NewRouter().
+   		PathPrefix("/api/v1/").
+   		Subrouter()
 
-	st := store.NewPostgresEventStore(args.conn)
-	hnd := handlers.NewEventHandler(st)
-	RegisterAllRoutes(router, hnd)
+   	st := store.NewPostgresEventStore(args.conn)
+   	hnd := handlers.NewEventHandler(st)
+   	RegisterAllRoutes(router, hnd) */
 
-	// start server
-	log.Println("Starting server at port: ", args.port)
-	return http.ListenAndServe(args.port, router)
-}
+// start server
+/* log.Println("Starting server at port: ", args.port)
+return http.ListenAndServe(args.port, router) */
+//}
 
 // RegisterAllRoutes registers all routes of the api
 func RegisterAllRoutes(router *mux.Router, hnd handlers.IEventHandler) {
@@ -62,4 +60,8 @@ func RegisterAllRoutes(router *mux.Router, hnd handlers.IEventHandler) {
 
 	// list events
 	router.HandleFunc("/events", hnd.Cancel).Methods(http.MethodGet)
+
+	// Health
+	router.HandleFunc("/health", hnd.Health).Methods(http.MethodGet)
+
 }

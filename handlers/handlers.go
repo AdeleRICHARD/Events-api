@@ -4,8 +4,10 @@ import (
 	"events-api/errors"
 	"events-api/objects"
 	"events-api/store"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 // IEventHandler is implement all the handlers
@@ -17,6 +19,7 @@ type IEventHandler interface {
 	Cancel(w http.ResponseWriter, r *http.Request)
 	Reschedule(w http.ResponseWriter, r *http.Request)
 	Delete(w http.ResponseWriter, r *http.Request)
+	Health(w http.ResponseWriter, r *http.Request)
 }
 
 type handler struct {
@@ -188,4 +191,12 @@ func (h *handler) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	WriteResponse(w, &objects.EventResponseWrapper{})
+}
+
+func (h *handler) Health(w http.ResponseWriter, r *http.Request) {
+	EnableCors(&w)
+	strDoc := []string{
+		"ON",
+	}
+	fmt.Fprintf(w, strings.Join(strDoc, "\n"))
 }
