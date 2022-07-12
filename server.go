@@ -59,7 +59,7 @@ func RegisterAllRoutes(router *mux.Router, hnd handlers.IEventHandler) {
 	router.HandleFunc("/event/reschedule", hnd.Reschedule).Methods(http.MethodPatch)
 
 	// list events
-	router.HandleFunc("/events", hnd.Cancel).Methods(http.MethodGet)
+	router.HandleFunc("/events", hnd.List).Methods(http.MethodGet)
 
 	// Health
 	router.HandleFunc("/health", hnd.Health).Methods(http.MethodGet)
